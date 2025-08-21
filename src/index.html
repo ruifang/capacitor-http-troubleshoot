@@ -23,8 +23,51 @@
     <link rel="manifest" href="./manifest.json" />
     <link rel="stylesheet" href="./css/style.css" />
     <meta name="theme-color" content="#31d53d" />
+
+  <style>
+    pre {
+      background: #f4f4f4;
+      padding: 10px;
+      border: 1px solid #ccc;
+      max-width: 600px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+  </style>
   </head>
   <body>
+
+  <h1>Submit Form with Custom Headers</h1>
+  <button id="submitBtn">Submit Form</button>
+  <h2>Response:</h2>
+  <pre id="responseOutput">No response yet.</pre>
+
+  <script>
+    const output = document.getElementById('responseOutput');
+
+    document.getElementById('submitBtn').addEventListener('click', async () => {
+      output.textContent = "Sending request...";
+
+      try {
+        const response = await fetch('https://httpbingo.org/redirect-to?url=headers', {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer 1234',
+            'X-Custom-Header': '123456',
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: '' // empty body
+        });
+
+        const data = await response.json();
+        output.textContent = JSON.stringify(data, null, 2); // pretty-print JSON
+      } catch (error) {
+        output.textContent = 'Error: ' + error;
+      }
+    });
+  </script>
+
+
     <capacitor-welcome></capacitor-welcome>
 
     <script src="./js/capacitor-welcome.js" type="module"></script>
